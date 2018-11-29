@@ -20,15 +20,15 @@
     margin-left: 35%;
 }
 #game{ 
- /* Positioning */
- margin-top: 5%;
- margin-left: 15%;
- /* Box-model */
- width: 65%;
- height: 65%;
- background-color: rgb(201, 122, 26);
- /* Typography */
- text-align: center;
+  /* Positioning */
+  margin-top: 5%;
+  margin-left: 15%;
+  /* Box-model */
+  width: 65%;
+  height: 65%;
+  background-color: rgb(201, 122, 26);
+  /* Typography */
+  text-align: center;
 
 } 
 #questionare{
@@ -37,7 +37,7 @@
     font-size: 120%; 
     color: black;
 }
-#start{
+#start-button{
   width: 25%;
   height: 50px;
   margin-left: 35%;
