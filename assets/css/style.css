@@ -33,12 +33,6 @@
   text-align: center;
 
 } 
-#questionare-panel{
-    margin: 10%; 
-    text-align: left;
-    font-size: 120%; 
-    color: black;
-}
 #start, #done, #reset{
   width: 20%;
   height: 50px;
