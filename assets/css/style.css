@@ -21,19 +21,19 @@
     color: aliceblue;
     margin-left: 35%;
 }
-#game{ 
-  /* Positioning */
-  margin-top: 5%;
-  margin-left: 15%;
-  /* Box-model */
-  width: 65%;
-  height: 65%;
-  background-color: rgb(201, 122, 26);
-  /* Typography */
-  text-align: center;
-
-} 
-#start, #done, #reset{
+.q-panel{
+    /* Positioning */
+    margin-top: 5%;
+    margin-left: 25%;
+    padding-top: 10%;
+    /* Box-model */
+    width: 60%;
+    height:400px;
+    background-color : orange;
+    /* Typography */
+    text-align: center;
+}
+#start, #next, #reset{
   width: 20%;
   height: 50px;
   border-radius: 5px;

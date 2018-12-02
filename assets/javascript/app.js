@@ -11,19 +11,27 @@
 $(document).ready(function () {
     console.log("hello");
 
-    /* Global Variables */
-    //==============================================================================================
+    /* Global Variables 
+    ==============================================================================================*/
     var intervalId;
     var clockRunning = false;          // prevents the clock from being sped up unnecessarily
-    var correctAnswer;
+    var rightAnswer;
     var wrongAnswer;
-    
-    /* Object */
-    //==============================================================================================
-   
+    var currentIndex = 0;
+
+    var questionPanel = $("<div class = 'q-panel'>");
+    $("#buttons").append(questionPanel);
+    var next = $('<button id = " next " > Next </button>');
+    questionPanel.append(next);
+    var reset = $('<button id = " reset " > Reset </button>');
+    questionPanel.append(reset);
+
+    /* Object 
+    ==============================================================================================*/
+
     // Object : Stopwatch to count down the time
     var stopwatch = {
-        time: 10,
+        time: 14,
         reset: function () {
             stopwatch.time = 0;
             $("#display").text(stopwatch.time + "secs remaining..");
@@ -38,113 +46,162 @@ $(document).ready(function () {
         stop: function () {
             //Use clearInterval to stop the count here and set the clock to not be running.
             clearInterval(intervalId);
-           
             clockRunning = false;
         },
         count: function () {
             stopwatch.time--;
             if (stopwatch.time === 0) {
                 $("#display").text("Countdown Complete!");
-                stopwatch.stop();  
+                stopwatch.stop();
             }
-            $("#display").text(stopwatch.time + "secs remaining..");
+            $("#display").text(stopwatch.time + " secs remaining..");
+            $("#display").css({
+                "margin-left": `${30}%`,
+                "font-size": `${120}%`,
+            });
         },
     };
 
     /* Object : Questionare  */
-    var questions = {
-        q1: {
-            ques:" What does CSS stand for? ",
+    var questions = [
+        {
+            ques: "What does CSS stand for?",
+            answer: [
+                "a. Computer Style Sheets", 
+                "b. Cascading Style Sheets", 
+                "c. Creative Style Sheets"
+            ],
+            correctAnswer:  "b. Cascading Style Sheets"
+        },
+
+        {
+            ques: "What is the correct HTML for referring to an external style sheet?",
+            answer: [
+                "a. stylesheet>mystyle.css</stylesheet ",
+                "b. link rel='stylesheet' type='text/css' href='mystyle.css'",
+                "c. style src='mystyle.css'"
+            ],
+            correctAnswer:  "b. link rel='stylesheet' type='text/css' href='mystyle.css'"
+        },
+        {
+             ques: "How do you write 'Hello World' in an alert box?",   
+             answer:[ 
+                 "a. alertBox(Hello World)",  
+                 "b. msg(Hello World)", 
+                 "c. alert(Hello World);"
+                ],
+             correctAnswer:  "c. alert(Hello World);"      
+        },
+        {
+            ques: "How do you create a function in JavaScript? ",
+            answer:[ "a.  function:myFunction()" , 
+                     "b.  function = myFunction()",
+                     "c.  function myFunction()"
+                   ],
+            correctAnswer: "b.  function = myFunction()"     
+        },
+        {
+            ques: " Which class provides a responsive fixed width container?",
             answer:[
-                {'a': 'Computer Style Sheets'},
-                {'b': 'Cascading Style Sheets '},
-                {'c': 'Creative Style Sheets'},
-            ]
+                "a. .container",
+                "b. .container-fixed",
+                "c. .container-fluid"
+            ],
+            correctAnswer: "b. .container-fixed"
         },
-        q2: {
-            'What is the correct HTML for referring to an external style sheet?':
-            {
-                'a': '<stylesheet>mystyle.css</stylesheet>',
-                'b': '<link rel="stylesheet" type="text/css" href="mystyle.css">',
-                'c': '<style src="mystyle.css"',
-            }
+        {
+            ques: " The external JavaScript file must contain the 'script' tag.",
+            answer: [
+                "a. True ",
+                "b. False",
+                "c. None of the above"
+            ],
+            correctAnswer: "b. False"
         },
-        q3: {
-            ' Inside which HTML element do we put the JavaScript?':
-            {
-                'a': ' <js>',
-                'b': '<javascript>',
-                'c': '<script>',
-            }
-        },
-        q4: {
-            ' Where is the correct place to insert a JavaScript?':
-            {
-                'a': 'The <head> section ',
-                'b': 'Both the <head> section and the <body> section are correct',
-                'c': 'The <body> section',
-            }
-        },
-        q5: {
-            ' What is the correct syntax for referring to an external script called "xxx.js"?':
-            {
-                'a': '<script name="xxx.js"></script> ',
-                'b': '<script href="xxx.js">',
-                'c': ' <script src=“xxx.js">',
-            }
-        },
-        q6: {
-            ' The external JavaScript file must contain the <script> tag.':
-            {
-                'a': 'True ',
-                'b': 'False',
-                'c': 'None of the above',
-            }
-        },
-        q7: {
-            ' Which of the following is correct?':
-            {
-                'a': 'jQuery is a JavaScript Library ',
-                'b': 'jQuery is a JSON Library',
-                'c': 'None of the above',
-            }
-        },
-    };
+        {
+            ques: " Which of the following is correct? ",
+            answer: [
+                 "a. jQuery is a JavaScript Library",
+                 "b. jQuery is a JSON Library",
+                 "c. None of the above"
+            ],
+            correctAnswer: "a. jQuery is a JavaScript Library"
+        }
+    ];
 
-    //console.log(questions.q1,questions.q2,questions.q3,questions.q5,questions.q6,questions.q7);
-    console.log(questions.q1.ques);
-    console.log(questions.q1.answer[0].a,  questions.q1.answer[1].b);
+    console.log(questions);
+    /* test */
+    // questions.forEach(function(question) {
+    //     console.log(question.ques);
+    //     console.log(question.answer);
 
-    /* Functions */
-    //==============================================================================================
-    var displayQA = function(){
-            
-        var questionPanel = $("<div class = 'q1-panel'>");
-        // $("#q1-panel").append(questions.q1);
-        // questionPanel.text("<p> ' " + questions.q1.ques + " ' </p>");
-        // questionPanel.text("<p> ' " + questions.q1.answer + " ' </p>");
+    //     question.answer.forEach(function(answer) {
+    //         console.log(answer.a);
+    //     });
 
-        questionPanel.text(questions.q1.answer[0].a, questions.q1.answer[1].b);
-        $("#buttons").append(questionPanel);
+    // });
 
-        questionPanel.css({
-            /* Positioning */
-            "margin-top": `${5}%`,
-            "margin-left":`${15}%`,
-            "padding-top": `${5}%`,
-            /* Box-model */
-            "width": `${60}%`,
-            "height": `${500}px`,
-            "background-color": "orange",
-            /* Typography */
-            "text-align": "center"
-        }); 
+    /* Functions 
+    ============================================================================================== */
+//     correctAnswerArr = ["b. Cascading Style Sheets ",
+//                         "b. link rel='stylesheet' type='text/css' href='mystyle.css'",
+//                         "c. alert(Hello World);",
+//                         "c. function myFunction()",
+//                         "b. .container-fixed",
+//                         "b. False",
+//                         "a. jQuery is a JavaScript Library",
+// ];
+
+
+    $("body").on("click", "p.answer", function () {
+        //console.log("click the correct answer.")
+        console.log($(this).text());
+        console.log(questions[currentIndex].correctAnswer);
+
+        if ($(this).text() === questions[currentIndex].correctAnswer) {
+            rightAnswer++;
+            console.log(questions[currentIndex].correctAnswer);
+        }
+        else {
+            wrongAnswer++;
+            console.log("Try again!");
+        }
+        currentIndex++;
+    });
+
+    var resetGame = reset.click(function () {
+        alert('hi');
+    });
+
+    next.on("click", function () {
+        currentIndex++;
+        clearPrevQuestion();
+        displayQA();
+
+        if (currentIndex === questions.length) {
+            currentIndex = 0;
+        }
+    });
+    var clearPrevQuestion = function () {
+        $(".question").empty();
+        $(".answer").empty();
+    }
+
+    var correctAnswerTempVariable = ''; 
+
+    var displayQA = function () {
+        //correcrTempVariable = correctAnswerArr[currentIndex];
+        // console.log(correctAnswerTempVariable);
+        questionPanel.append("<p class = 'question'> "+ questions[currentIndex].ques +"</p>");
+        questionPanel.append(`<p class = 'answer' data-value = '0'>${questions[currentIndex].answer[0]}</p>`);
+        questionPanel.append("<p class = 'answer' data-value = '1'>"+ questions[currentIndex].answer[1] +"</p>");
+        questionPanel.append("<p class = 'answer' data-value = '2'>"+ questions[currentIndex].answer[2] +"</p>");
     };
 
     $("#start").on("click", function () {
         $("#start").hide();
         stopwatch.start();
         displayQA();
-    })
+    });
 
 });
