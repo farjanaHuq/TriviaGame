@@ -25,6 +25,8 @@ $(document).ready(function () {
     questionPanel.append(next);
     var reset = $('<button id = " reset " > Reset </button>');
     questionPanel.append(reset);
+    var correctAnswerDiv = $("<p>");
+    var wrongAnswerDiv = $("<p>");
 
     /* Object 
     ==============================================================================================*/
@@ -34,7 +36,7 @@ $(document).ready(function () {
         time: 14,
         reset: function () {
             stopwatch.time = 0;
-            $("#display").text(stopwatch.time + "secs remaining..");
+            $("#display").text("00:00");
         },
         start: function () {
             //Use setInterval to start the count here and set the clock to running.
@@ -54,11 +56,7 @@ $(document).ready(function () {
                 $("#display").text("Countdown Complete!");
                 stopwatch.stop();
             }
-            $("#display").text(stopwatch.time + " secs remaining..");
-            $("#display").css({
-                "margin-left": `${30}%`,
-                "font-size": `${120}%`,
-            });
+            $("#display").text("00" + ":" + stopwatch.time);
         },
     };
 
@@ -143,20 +141,13 @@ $(document).ready(function () {
 
     /* Functions 
     ============================================================================================== */
-//     correctAnswerArr = ["b. Cascading Style Sheets ",
-//                         "b. link rel='stylesheet' type='text/css' href='mystyle.css'",
-//                         "c. alert(Hello World);",
-//                         "c. function myFunction()",
-//                         "b. .container-fixed",
-//                         "b. False",
-//                         "a. jQuery is a JavaScript Library",
-// ];
-
-
+    
     $("body").on("click", "p.answer", function () {
-        //console.log("click the correct answer.")
-        console.log($(this).text());
-        console.log(questions[currentIndex].correctAnswer);
+
+        /* test */
+        // console.log("click the correct answer.")
+        // console.log($(this).text());
+        // console.log(questions[currentIndex].correctAnswer);
 
         if ($(this).text() === questions[currentIndex].correctAnswer) {
             rightAnswer++;
@@ -169,30 +160,38 @@ $(document).ready(function () {
         currentIndex++;
     });
 
-    var resetGame = reset.click(function () {
-        alert('hi');
+    reset.click(function () {
+        stopwatch.reset();
+        clearPrevQuestion();
+        displayQA();
     });
 
     next.on("click", function () {
+
         currentIndex++;
         clearPrevQuestion();
         displayQA();
 
-        if (currentIndex === questions.length) {
-            currentIndex = 0;
+        if (currentIndex > questions.length) {
+
+            correctAnswerDiv.text("Correct Answer(s) : " + rightAnswer);
+            console.log(rightAnswer);
+            questionPanel.append(correctAnswerDiv);
+
+            wrongAnswerDiv.text("Wrong Answer(s) : " + wrongAnswer);
+            console.log(wrongAnswer);
+            questionPanel.append(wrongAnswerDiv);
         }
     });
+
     var clearPrevQuestion = function () {
         $(".question").empty();
         $(".answer").empty();
-    }
-
-    var correctAnswerTempVariable = ''; 
+    };
 
     var displayQA = function () {
-        //correcrTempVariable = correctAnswerArr[currentIndex];
-        // console.log(correctAnswerTempVariable);
-        questionPanel.append("<p class = 'question'> "+ questions[currentIndex].ques +"</p>");
+      
+        questionPanel.append("<p class = 'question'>"+ questions[currentIndex].ques +"</p>");
         questionPanel.append(`<p class = 'answer' data-value = '0'>${questions[currentIndex].answer[0]}</p>`);
         questionPanel.append("<p class = 'answer' data-value = '1'>"+ questions[currentIndex].answer[1] +"</p>");
         questionPanel.append("<p class = 'answer' data-value = '2'>"+ questions[currentIndex].answer[2] +"</p>");

@@ -21,24 +21,36 @@
     color: aliceblue;
     margin-left: 35%;
 }
+#display{
+    margin-left: 38%;
+    width: 8%;
+    height: 15px;
+    padding: 1%;
+    /* padding-top: 3%;
+    padding-left: 5%; */
+    border-radius: 5px; 
+    background-color: white;
+    color: black;
+    font-display: bold;
+    font-size: 12px;
+    text-align: center;
+}
 .q-panel{
-    /* Positioning */
     margin-top: 5%;
-    margin-left: 25%;
+    margin-left: 20%;
     padding-top: 10%;
-    /* Box-model */
     width: 60%;
     height:400px;
     background-color : orange;
-    /* Typography */
+  
     text-align: center;
 }
 #start, #next, #reset{
   width: 20%;
   height: 50px;
   border-radius: 5px;
-  margin-top: 30%;
-  margin-left: 40%;
+  margin-top: 10%;
+  margin-left: 35%;
 }
 
      
