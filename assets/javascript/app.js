@@ -136,7 +136,7 @@ $(document).ready(function () {
 
     /* Functions 
     ============================================================================================== */
-    
+
     // var animateHeading = function(){
     //     for(var i = 0; i< $('#heading').val(); i++){
     //         console.log($('#heading').charAt(i));
@@ -163,7 +163,8 @@ $(document).ready(function () {
         console.log(wrongAnswer);
         questionPanel.append(wrongAnswerDiv);
         next.hide();
-        stopwatch.stop();
+       // stopwatch.remove();
+      
     }
     // Onclick event to select answers
     $("body").on("click", "p.answer", function () {
@@ -199,6 +200,8 @@ $(document).ready(function () {
         currentIndex++;
         if (currentIndex >= questions.length) {
             corrWrongAns();
+            stopwatch.stop();
+            stopwatch.remove();
         } else {
             displayQA();
         }
