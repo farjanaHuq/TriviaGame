@@ -19,15 +19,23 @@
 }
 #heading{
     color: aliceblue;
-    margin-left: 35%;
+    margin-left: 38%;
+    font-weight: bold;
+    -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+    animation-name: example;
+    animation-duration: 30s;
+    width: 22%;
+    height: 8%;
+    padding-left: 10px;
+    border: 1px solid #888888;
+    box-shadow: 5px 10px #888888;
 }
 #display{
-    margin-left: 38%;
+    margin: auto;
     width: 8%;
     height: 15px;
-    padding: 1%;
-    /* padding-top: 3%;
-    padding-left: 5%; */
+    padding: 1%; 
     border-radius: 5px; 
     background-color: white;
     color: black;
@@ -37,20 +45,25 @@
 }
 .q-panel{
     margin-top: 5%;
-    margin-left: 20%;
+    margin: auto;
     padding-top: 10%;
     width: 60%;
     height:400px;
-    background-color : orange;
-  
+    background-color : orange; 
     text-align: center;
+  
 }
-#start, #next, #reset{
+#start{
   width: 20%;
   height: 50px;
   border-radius: 5px;
   margin-top: 10%;
-  margin-left: 35%;
+  margin-left: 39%;
+  margin-bottom: 8%;
+  box-shadow: 5px 5px azure;
+}
+#start:hover{
+    background-color: #888888;
 }
 
      

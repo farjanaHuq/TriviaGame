@@ -1,22 +1,12 @@
 //create objects for each question
-//onclick function to the start button
-// Inside start button write the timer function 
-//display time left
-//display question 
-//display the possible answers
-//onclick function for the correct answer
-//if all the questions answered in 30 secs, alert win
-// if not then alert loose
 
 $(document).ready(function () {
-    console.log("hello");
+   
 
     /* Global Variables 
     ==============================================================================================*/
     var intervalId;
     var clockRunning = false;          // prevents the clock from being sped up unnecessarily
-    var rightAnswer;
-    var wrongAnswer;
     var currentIndex = 0;
 
     var questionPanel = $("<div class = 'q-panel'>");
@@ -27,19 +17,21 @@ $(document).ready(function () {
     questionPanel.append(reset);
     var correctAnswerDiv = $("<p>");
     var wrongAnswerDiv = $("<p>");
-
+    var displayDiv = $("<div id= 'display'>")
     /* Object 
     ==============================================================================================*/
 
     // Object : Stopwatch to count down the time
     var stopwatch = {
-        time: 14,
+        time: 10,
         reset: function () {
-            stopwatch.time = 0;
-            $("#display").text("00:00");
+            stopwatch.time = 10;
+            $("#display").text("00:10");
         },
         start: function () {
             //Use setInterval to start the count here and set the clock to running.
+            stopwatch.time = 10;
+            $("#display").text("00:10");
             if (!clockRunning) {
                 intervalId = setInterval(stopwatch.count, 1000);
                 clockRunning = true;
@@ -55,7 +47,13 @@ $(document).ready(function () {
             if (stopwatch.time === 0) {
                 $("#display").text("Countdown Complete!");
                 stopwatch.stop();
+                displayNextQuestion();
+                stopwatch.time = 14;
+                stopwatch.start();
             }
+            if (stopwatch.time < 10) {
+                stopwatch.time = "0" + stopwatch.time;
+              }
             $("#display").text("00" + ":" + stopwatch.time);
         },
     };
@@ -69,7 +67,8 @@ $(document).ready(function () {
                 "b. Cascading Style Sheets", 
                 "c. Creative Style Sheets"
             ],
-            correctAnswer:  "b. Cascading Style Sheets"
+            correctAnswer:  "b. Cascading Style Sheets",
+            result: false
         },
 
         {
@@ -79,7 +78,8 @@ $(document).ready(function () {
                 "b. link rel='stylesheet' type='text/css' href='mystyle.css'",
                 "c. style src='mystyle.css'"
             ],
-            correctAnswer:  "b. link rel='stylesheet' type='text/css' href='mystyle.css'"
+            correctAnswer:  "b. link rel='stylesheet' type='text/css' href='mystyle.css'",
+            result: false
         },
         {
              ques: "How do you write 'Hello World' in an alert box?",   
@@ -88,7 +88,8 @@ $(document).ready(function () {
                  "b. msg(Hello World)", 
                  "c. alert(Hello World);"
                 ],
-             correctAnswer:  "c. alert(Hello World);"      
+             correctAnswer:  "c. alert(Hello World);",
+             result: false      
         },
         {
             ques: "How do you create a function in JavaScript? ",
@@ -96,7 +97,8 @@ $(document).ready(function () {
                      "b.  function = myFunction()",
                      "c.  function myFunction()"
                    ],
-            correctAnswer: "b.  function = myFunction()"     
+            correctAnswer: "b.  function = myFunction()",
+            result: false   
         },
         {
             ques: " Which class provides a responsive fixed width container?",
@@ -105,7 +107,8 @@ $(document).ready(function () {
                 "b. .container-fixed",
                 "c. .container-fluid"
             ],
-            correctAnswer: "b. .container-fixed"
+            correctAnswer: "b. .container-fixed",
+            result: false
         },
         {
             ques: " The external JavaScript file must contain the 'script' tag.",
@@ -114,7 +117,8 @@ $(document).ready(function () {
                 "b. False",
                 "c. None of the above"
             ],
-            correctAnswer: "b. False"
+            correctAnswer: "b. False",
+            result: false
         },
         {
             ques: " Which of the following is correct? ",
@@ -123,84 +127,108 @@ $(document).ready(function () {
                  "b. jQuery is a JSON Library",
                  "c. None of the above"
             ],
-            correctAnswer: "a. jQuery is a JavaScript Library"
+            correctAnswer: "a. jQuery is a JavaScript Library",
+            result: false
         }
     ];
 
-    console.log(questions);
-    /* test */
-    // questions.forEach(function(question) {
-    //     console.log(question.ques);
-    //     console.log(question.answer);
-
-    //     question.answer.forEach(function(answer) {
-    //         console.log(answer.a);
-    //     });
-
-    // });
+    // console.log(questions);
 
     /* Functions 
     ============================================================================================== */
     
-    $("body").on("click", "p.answer", function () {
+    // var animateHeading = function(){
+    //     for(var i = 0; i< $('#heading').val(); i++){
+    //         console.log($('#heading').charAt(i));
+    //     }
+    // }
+    // animateHeading();
 
-        /* test */
-        // console.log("click the correct answer.")
-        // console.log($(this).text());
-        // console.log(questions[currentIndex].correctAnswer);
+    //Function to display correct and wrong answers
+    var corrWrongAns = function() {
+        var rightAnswer = 0;
+        var wrongAnswer = 0;
+        questions.forEach(function(question) {
+            if (question.result) {
+                rightAnswer++;
+            } else {
+                wrongAnswer++;
+            }
+        });
+
+        correctAnswerDiv.text("Correct Answer(s) : " + Number(rightAnswer));
+        questionPanel.append(correctAnswerDiv);
+
+        wrongAnswerDiv.text("Wrong Answer(s) : " + Number(wrongAnswer));
+        console.log(wrongAnswer);
+        questionPanel.append(wrongAnswerDiv);
+        next.hide();
+        stopwatch.stop();
+    }
+    // Onclick event to select answers
+    $("body").on("click", "p.answer", function () {
+        
+        $("#ans1").css('color', 'white');
+        $("#ans2").css('color', 'white');
+        $("#ans3").css('color', 'white');
+        $(this).css('color', 'red');
 
         if ($(this).text() === questions[currentIndex].correctAnswer) {
-            rightAnswer++;
-            console.log(questions[currentIndex].correctAnswer);
+            questions[currentIndex].result = true;
+            // console.log(questions[currentIndex].correctAnswer);
         }
         else {
-            wrongAnswer++;
-            console.log("Try again!");
+            questions[currentIndex].result = false;
+            // console.log("Try again!");
         }
-        currentIndex++;
     });
-
-    reset.click(function () {
+    // reset button to start from the begining
+    reset.on("click", function () {
+        currentIndex = 0;
         stopwatch.reset();
         clearPrevQuestion();
+        correctAnswerDiv.remove();
+        wrongAnswerDiv.remove();
         displayQA();
+        next.show();
+        stopwatch.reset();
     });
-
-    next.on("click", function () {
-
-        currentIndex++;
+    //Function to display next question, if all questions are answered it goes to the final page
+    var displayNextQuestion = function() {
         clearPrevQuestion();
-        displayQA();
-
-        if (currentIndex > questions.length) {
-
-            correctAnswerDiv.text("Correct Answer(s) : " + rightAnswer);
-            console.log(rightAnswer);
-            questionPanel.append(correctAnswerDiv);
-
-            wrongAnswerDiv.text("Wrong Answer(s) : " + wrongAnswer);
-            console.log(wrongAnswer);
-            questionPanel.append(wrongAnswerDiv);
+        currentIndex++;
+        if (currentIndex >= questions.length) {
+            corrWrongAns();
+        } else {
+            displayQA();
         }
+    }
+    // next button to move on to next question
+    next.on("click", function () {
+        displayNextQuestion();
     });
-
+    
+    // Function to clear the div before rendering new question
     var clearPrevQuestion = function () {
-        $(".question").empty();
-        $(".answer").empty();
+        $(".question").remove();
+        $(".answer").remove();
     };
-
+    // Function render questions in the question panel div
     var displayQA = function () {
-      
-        questionPanel.append("<p class = 'question'>"+ questions[currentIndex].ques +"</p>");
-        questionPanel.append(`<p class = 'answer' data-value = '0'>${questions[currentIndex].answer[0]}</p>`);
-        questionPanel.append("<p class = 'answer' data-value = '1'>"+ questions[currentIndex].answer[1] +"</p>");
-        questionPanel.append("<p class = 'answer' data-value = '2'>"+ questions[currentIndex].answer[2] +"</p>");
-    };
+        //console.log(currentIndex);
+        questionPanel.append(`<p class = 'question'> ${questions[currentIndex].ques}</p>`);
+        questionPanel.append(`<p class = 'answer' id='ans1' data-value = '0'>${questions[currentIndex].answer[0]}</p>`);
+        questionPanel.append("<p class = 'answer' id='ans2' data-value = '1'>"+ questions[currentIndex].answer[1] +"</p>");
+        questionPanel.append("<p class = 'answer' id='ans3' data-value = '2'>"+ questions[currentIndex].answer[2] +"</p>");
+        questionPanel.append(displayDiv);
 
+        stopwatch.start();
+    };
+    // Function to start the game 
     $("#start").on("click", function () {
         $("#start").hide();
-        stopwatch.start();
         displayQA();
+        animateHeading();
     });
 
 });
